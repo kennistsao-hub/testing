@@ -2,640 +2,636 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>餐厅在线预定</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CLOUD Bistro · Reservation</title>
 <style>
   :root {
     color-scheme: light;
-    --primary: #8B4513;
-    --primary-light: #A0522D;
-    --bg: #faf7f2;
-    --card-bg: #ffffff;
-    --text: #2c2c2c;
-    --text-secondary: #6b6b6b;
-    --border: #e8e0d5;
-    --input-bg: #fdfaf6;
-    --success: #5a8a4a;
-    --error: #c0392b;
-    --radius: 10px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --blue: #007AFF;
+    --text: #1d1d1f;
+    --text2: #6e6e73;
+    --text3: #aeaeb2;
+    --bg: #ffffff;
+    --bg2: #f5f5f7;
+    --sep: #d2d2d7;
+    --radius: 12px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.5;
     min-height: 100vh;
-    -webkit-tap-highlight-color: transparent;
+    padding-bottom: env(safe-area-inset-bottom, 40px);
   }
 
-  /* ---- Header ---- */
-  .header {
-    background: linear-gradient(135deg, #3a1c0d 0%, #5a2d14 40%, #8B4513 100%);
-    color: #fff;
+  /* ---- Hero Image: original ratio, no crop ---- */
+  .hero {
+    width: 100%;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ---- Brand Strip ---- */
+  .brand {
     text-align: center;
-    padding: 28px 20px 22px;
-    position: relative;
-    overflow: hidden;
+    padding: 32px 24px 8px;
   }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 18px;
-    background: var(--bg);
-    border-radius: 50% 50% 0 0;
+  .brand h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text);
   }
-  .header .restaurant-name {
+  .brand p {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 6px;
+  }
+
+  /* ---- Section ---- */
+  .section {
+    padding: 0 20px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .section-title {
     font-size: 22px;
     font-weight: 700;
-    letter-spacing: 2px;
+    color: var(--text);
+    letter-spacing: -0.3px;
     margin-bottom: 4px;
   }
-  .header .subtitle {
-    font-size: 13px;
-    opacity: 0.8;
-    letter-spacing: 1px;
+  .section-sub {
+    font-size: 14px;
+    color: var(--text3);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
   }
 
-  /* ---- Container ---- */
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0 16px 40px;
-  }
-
-  /* ---- Form Card ---- */
-  .form-card {
-    background: var(--card-bg);
+  /* ---- Info List (Apple style) ---- */
+  .info-list {
+    background: var(--bg);
     border-radius: var(--radius);
-    padding: 24px 20px;
-    box-shadow: var(--shadow);
-    margin-top: -10px;
+    overflow: hidden;
+    margin-bottom: 36px;
   }
-  .form-card .section-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--border);
+  .info-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    padding: 14px 16px;
+    border-bottom: 0.5px solid var(--sep);
+    gap: 12px;
   }
-  .section-title .icon { font-size: 18px; }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .info-text { flex: 1; min-width: 0; }
+  .info-label {
+    font-size: 11px; font-weight: 500; color: var(--text3);
+    letter-spacing: 0.3px; margin-bottom: 2px;
+  }
+  .info-value { font-size: 15px; color: var(--text); font-weight: 500; }
+  .info-value a {
+    color: var(--blue); text-decoration: none;
+  }
+  .info-value a:active { opacity: 0.6; }
 
-  /* ---- Form Group ---- */
+  /* ---- Form (Apple Settings style) ---- */
   .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 24px;
   }
-  .form-group:last-child { margin-bottom: 0; }
-  .form-group label {
+  .form-label {
     display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
   }
-  .form-group label .required {
-    color: var(--error);
-    margin-left: 2px;
-  }
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
+  .form-label .zh { display: block; font-size: 15px; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+  .form-label .en { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Input */
+  .input {
     width: 100%;
-    padding: 12px 14px;
-    font-size: 15px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: var(--input-bg);
+    height: 48px;
+    padding: 0 16px;
+    font-size: 17px;
+    font-family: inherit;
     color: var(--text);
+    background: var(--bg2);
+    border: none;
+    border-radius: 10px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: background 0.15s;
+    -webkit-appearance: none;
+  }
+  .input:focus { background: #eeeef1; }
+  .input::placeholder { color: var(--text3); }
+  .input.error { background: #fff0f0; }
+
+  /* Segmented Control */
+  .segment {
+    display: flex;
+    background: var(--bg2);
+    border-radius: 8.9px;
+    padding: 2px;
+    margin-bottom: 14px;
+  }
+  .seg-btn {
+    flex: 1;
+    height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500; color: var(--text2);
+    border-radius: 7px; cursor: pointer; user-select: none;
+    transition: all 0.2s;
+  }
+  .seg-btn.active {
+    background: #fff;
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  }
+
+  /* Time Grid */
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .time-chip {
+    height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500; color: var(--text2);
+    background: var(--bg2); border-radius: 10px;
+    cursor: pointer; user-select: none; transition: all 0.15s;
+  }
+  .time-chip:active { transform: scale(0.96); }
+  .time-chip.active {
+    background: var(--text);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: inline-flex; align-items: center; gap: 20px;
+    background: var(--bg2); border-radius: 10px; padding: 4px;
+  }
+  .step-btn {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: var(--blue); background: #fff;
+    border-radius: 8px; cursor: pointer; user-select: none;
+    transition: opacity 0.15s; font-weight: 500;
+  }
+  .step-btn:active { opacity: 0.5; }
+  .step-val {
+    font-size: 22px; font-weight: 600; color: var(--text);
+    min-width: 36px; text-align: center; font-variant-numeric: tabular-nums;
+  }
+
+  /* Textarea */
+  .textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 14px 16px;
+    font-size: 15px; font-family: inherit;
+    color: var(--text);
+    background: var(--bg2); border: none; border-radius: 10px;
+    outline: none; resize: vertical;
+    transition: background 0.15s;
+    -webkit-appearance: none;
+  }
+  .textarea:focus { background: #eeeef1; }
+  .textarea::placeholder { color: var(--text3); }
+
+  /* ---- Primary Button ---- */
+  .btn-primary {
+    display: block; width: 100%; height: 52px;
+    font-size: 17px; font-weight: 600; letter-spacing: 0.5px;
+    color: #fff; background: var(--text);
+    border: none; border-radius: 14px;
+    cursor: pointer; transition: opacity 0.15s;
     font-family: inherit;
     -webkit-appearance: none;
   }
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--primary-light);
-    background: #fff;
-  }
-  .form-group textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-  .form-group input.error,
-  .form-group select.error {
-    border-color: var(--error);
-    background: #fff8f8;
-  }
-  .error-msg {
-    font-size: 12px;
-    color: var(--error);
-    margin-top: 4px;
-    display: none;
-  }
-
-  /* ---- Meal Period Selector ---- */
-  .period-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-  .period-btn {
-    flex: 1;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: var(--input-bg);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .period-btn.active {
-    border-color: var(--primary);
-    background: #fdf5ee;
-    color: var(--primary);
-    font-weight: 600;
-  }
-  .time-slots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-  }
-  .time-slot {
-    padding: 8px 14px;
-    font-size: 13px;
-    border: 1.5px solid var(--border);
-    border-radius: 20px;
-    background: var(--input-bg);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .time-slot.active {
-    border-color: var(--primary);
-    background: var(--primary);
-    color: #fff;
-    font-weight: 500;
-  }
-
-  /* ---- Guest Counter ---- */
-  .guest-counter {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .guest-btn {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: var(--input-bg);
-    font-size: 20px;
-    color: var(--text);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .guest-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); }
-  .guest-number {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--primary);
-    min-width: 50px;
-    text-align: center;
-  }
-
-  /* ---- Submit Button ---- */
-  .submit-btn {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #fff;
-    background: linear-gradient(135deg, #8B4513, #A0522D);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    margin-top: 24px;
-  }
-  .submit-btn:active { opacity: 0.85; transform: scale(0.98); }
-  .submit-btn:disabled { opacity: 0.5; pointer-events: none; }
+  .btn-primary:active { opacity: 0.75; }
 
   /* ---- Result Card ---- */
-  .result-card {
-    display: none;
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 0;
-    box-shadow: var(--shadow);
-    margin-top: 20px;
-    overflow: hidden;
-    animation: slideUp 0.3s ease;
+  .result-wrap {
+    padding: 0 20px; max-width: 480px; margin: 0 auto;
+    animation: fadeIn 0.35s ease;
   }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .result-card.show { display: block; }
-  .result-header {
-    background: linear-gradient(135deg, #5a8a4a, #6a9a5a);
-    color: #fff;
-    text-align: center;
-    padding: 16px;
+  .result-done {
+    text-align: center; padding: 20px 0 8px;
   }
-  .result-header .check-icon {
-    font-size: 36px;
-    display: block;
-    margin-bottom: 4px;
+  .done-icon {
+    width: 56px; height: 56px; margin: 0 auto 12px;
+    background: #34c759; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; color: #fff;
   }
-  .result-header .result-title {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
+  .done-title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .done-sub { font-size: 13px; color: var(--text3); margin-top: 4px; letter-spacing: 0.5px; }
+  .note-box {
+    background: var(--bg2); border-radius: 14px; padding: 20px;
+    font-size: 14px; line-height: 1.8; white-space: pre-wrap;
+    word-break: break-all; color: var(--text);
+    user-select: all; margin: 16px 0;
   }
-  .result-body {
-    padding: 20px;
+  .btn-copy {
+    display: block; width: 100%; height: 48px;
+    font-size: 15px; font-weight: 600;
+    color: var(--text); background: var(--bg2);
+    border: none; border-radius: 12px;
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+    -webkit-appearance: none;
   }
-  .note-text {
-    background: #fdfaf6;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 14px;
-    line-height: 2;
-    white-space: pre-wrap;
-    word-break: break-all;
-    color: var(--text);
-    user-select: all;
-  }
-  .copy-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--primary);
-    background: #fdf5ee;
-    border: 1.5px solid var(--primary);
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 12px;
-    transition: all 0.2s;
-  }
-  .copy-btn:active { background: var(--primary); color: #fff; }
-  .copy-btn.copied {
-    background: var(--success);
-    color: #fff;
-    border-color: var(--success);
-  }
-  .back-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    margin-top: 6px;
-    text-decoration: underline;
+  .btn-copy:active { opacity: 0.6; }
+  .btn-copy.done { background: #34c759; color: #fff; }
+  .btn-reset {
+    display: block; width: 100%; padding: 14px;
+    font-size: 14px; color: var(--blue); background: none;
+    border: none; cursor: pointer; font-family: inherit;
+    margin-top: 4px; -webkit-appearance: none;
   }
 
   /* ---- Footer ---- */
   .footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 12px;
-    color: #bbb;
+    text-align: center; padding: 40px 20px 20px;
+    font-size: 12px; color: var(--text3); letter-spacing: 0.5px;
   }
-
-  /* ---- Hidden inputs for time ---- */
-  .hidden-field { display: none; }
 
   /* ---- Toast ---- */
   .toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    background: rgba(0,0,0,0.8);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    pointer-events: none;
-    opacity: 0;
-    transition: all 0.25s;
-    z-index: 999;
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.85);
+    background: rgba(0,0,0,0.82); color: #fff;
+    padding: 12px 24px; border-radius: 10px;
+    font-size: 15px; font-weight: 500;
+    pointer-events: none; opacity: 0; z-index: 999;
+    transition: all 0.22s cubic-bezier(0.25, 0.1, 0.25, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   }
-  .toast.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  .toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+  /* ---- Error text ---- */
+  .field-error {
+    font-size: 12px; font-weight: 500; color: #ff3b30;
+    margin-top: 6px; display: none;
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <div class="restaurant-name" id="restaurantName">我的餐厅</div>
-  <div class="subtitle">ONLINE RESERVATION</div>
+<!-- Hero -->
+<div class="hero">
+  <img src="images/1.jpg" alt="CLOUD Bistro">
 </div>
 
-<div class="container">
-
-  <!-- Form -->
-  <div class="form-card" id="formCard">
-    <div class="section-title">
-      <span class="icon">📋</span> 填写预定信息
-    </div>
-
-    <div class="form-group">
-      <label>姓名 <span class="required">*</span></label>
-      <input type="text" id="customerName" placeholder="请输入您的姓名" maxlength="20">
-      <div class="error-msg" id="nameError">请输入姓名</div>
-    </div>
-
-    <div class="form-group">
-      <label>手机号 <span class="required">*</span></label>
-      <input type="tel" id="customerPhone" placeholder="请输入手机号码" maxlength="11">
-      <div class="error-msg" id="phoneError">请输入正确的手机号码</div>
-    </div>
-
-    <div class="form-group">
-      <label>用餐日期 <span class="required">*</span></label>
-      <input type="date" id="diningDate">
-      <div class="error-msg" id="dateError">请选择用餐日期</div>
-    </div>
-
-    <div class="form-group">
-      <label>用餐时段 <span class="required">*</span></label>
-      <div class="period-selector" id="periodSelector">
-        <div class="period-btn" data-period="lunch" onclick="selectPeriod('lunch')">🥢 午餐</div>
-        <div class="period-btn" data-period="dinner" onclick="selectPeriod('dinner')">🍷 晚餐</div>
-      </div>
-      <div class="time-slots" id="timeSlots"></div>
-      <div class="error-msg" id="timeError">请选择用餐时段和时间</div>
-    </div>
-
-    <div class="form-group">
-      <label>用餐人数 <span class="required">*</span></label>
-      <div class="guest-counter">
-        <div class="guest-btn" onclick="changeGuests(-1)">−</div>
-        <div class="guest-number" id="guestNumber">2</div>
-        <div class="guest-btn" onclick="changeGuests(1)">+</div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>特殊需求</label>
-      <textarea id="specialRequests" placeholder="如有忌口、过敏、座位偏好等，请在此注明" maxlength="200"></textarea>
-    </div>
-
-    <button class="submit-btn" onclick="submitForm()">确认预定</button>
-  </div>
-
-  <!-- Result -->
-  <div class="result-card" id="resultCard">
-    <div class="result-header">
-      <span class="check-icon">✅</span>
-      <span class="result-title">预定信息已生成</span>
-    </div>
-    <div class="result-body">
-      <div class="note-text" id="noteText"></div>
-      <button class="copy-btn" id="copyBtn" onclick="copyNote()">📋 一键复制笔记</button>
-      <button class="back-btn" onclick="resetForm()">← 重新填写</button>
-    </div>
-  </div>
-
+<!-- Brand -->
+<div class="brand">
+  <h1>CLOUD Bistro</h1>
+  <p>Online Reservation</p>
 </div>
 
-<div class="footer">到店时请出示预定信息</div>
+<!-- Info -->
+<div class="section">
+  <div class="info-list">
+    <div class="info-row">
+      <div class="info-icon">📍</div>
+      <div class="info-text">
+        <div class="info-value">上海市黄浦区·复星艺术中心4楼</div>
+        <div class="info-label">Fosun Foundation, 4F · Huangpu, Shanghai</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🕐</div>
+      <div class="info-text">
+        <div class="info-value">10:00 – 24:00</div>
+        <div class="info-label">Open Daily</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📞</div>
+      <div class="info-text">
+        <div class="info-value"><a href="tel:18149716830">181 4971 6830</a></div>
+        <div class="info-label">Reservation Inquiries</div>
+      </div>
+    </div>
+    <div class="info-row" style="cursor:pointer;" onclick="openMap()">
+      <div class="info-icon">🗺️</div>
+      <div class="info-text">
+        <div class="info-value" style="color:var(--blue);">点击导航 · Navigate</div>
+        <div class="info-label">Open in Maps</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!-- Toast -->
+<!-- Reservation Form -->
+<div class="section" id="formSection">
+
+  <div class="section-title">预定</div>
+  <div class="section-sub">Reservation</div>
+
+  <!-- Name -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">姓名</span>
+      <span class="en">Name</span>
+    </div>
+    <input class="input" id="name" type="text" placeholder="您的姓名 · Your name" maxlength="20" oninput="clearErr('name')">
+    <div class="field-error" id="nameErr">Please enter your name</div>
+  </div>
+
+  <!-- Phone -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">手机号</span>
+      <span class="en">Phone Number</span>
+    </div>
+    <input class="input" id="phone" type="tel" placeholder="11位手机号" maxlength="11" oninput="clearErr('phone')">
+    <div class="field-error" id="phoneErr">Please enter a valid phone number</div>
+  </div>
+
+  <!-- Date -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">预定日期</span>
+      <span class="en">Date</span>
+    </div>
+    <input class="input" id="date" type="date" onchange="clearErr('date')">
+    <div class="field-error" id="dateErr">Please select a date</div>
+  </div>
+
+  <!-- Period -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">用餐时段</span>
+      <span class="en">Meal Period</span>
+    </div>
+    <div class="segment">
+      <div class="seg-btn" data-p="lunch" onclick="pickPeriod('lunch')">午餐 Lunch</div>
+      <div class="seg-btn" data-p="dinner" onclick="pickPeriod('dinner')">晚餐 Dinner</div>
+    </div>
+    <div class="time-grid" id="timeGrid"></div>
+    <div class="field-error" id="timeErr">Please select a time slot</div>
+  </div>
+
+  <!-- Guests -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">用餐人数</span>
+      <span class="en">Guests</span>
+    </div>
+    <div class="stepper">
+      <div class="step-btn" onclick="adjGuests(-1)">−</div>
+      <div class="step-val" id="guestVal">2</div>
+      <div class="step-btn" onclick="adjGuests(1)">+</div>
+    </div>
+  </div>
+
+  <!-- Note -->
+  <div class="form-group">
+    <div class="form-label">
+      <span class="zh">特殊需求</span>
+      <span class="en">Special Requests</span>
+    </div>
+    <textarea class="textarea" id="note" placeholder="忌口、过敏、座位偏好、纪念日…&#10;Dietary needs, seating, occasions…" maxlength="200"></textarea>
+  </div>
+
+  <!-- Submit -->
+  <div style="padding-top:8px; padding-bottom:20px;">
+    <button class="btn-primary" onclick="submitForm()">确认预定 · Confirm</button>
+  </div>
+</div>
+
+<!-- Result -->
+<div id="resultSection" style="display:none;">
+  <div class="result-wrap">
+    <div class="result-done">
+      <div class="done-icon">✓</div>
+      <div class="done-title">预定确认</div>
+      <div class="done-sub">Reservation Confirmed</div>
+    </div>
+    <div class="note-box" id="noteBox"></div>
+    <button class="btn-copy" id="copyBtn" onclick="doCopy()">复制笔记 · Copy Note</button>
+    <button class="btn-reset" onclick="doReset()">重新填写 · New Reservation</button>
+  </div>
+</div>
+
+<div class="footer">CLOUD Bistro · Fosun Foundation 4F</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-  // ---- Config ----
-  const RESTAURANT_NAME = '我的餐厅';
-  document.getElementById('restaurantName').textContent = RESTAURANT_NAME;
+const R = {
+  name: 'CLOUD Bistro',
+  addr: '上海市黄浦区·复星艺术中心4楼',
+  hours: '10:00 – 24:00',
+  phone: '181 4971 6830',
+  lng: 121.4938,
+  lat: 31.2295,
+};
 
-  const timeSlotsData = {
-    lunch: ['11:00', '11:30', '12:00', '12:30', '13:00', '13:30'],
-    dinner: ['17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30']
-  };
+const SLOTS = {
+  lunch: ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00'],
+  dinner: ['17:00','17:30','18:00','18:30','19:00','19:30','20:00'],
+};
 
-  let selectedPeriod = null;
-  let selectedTime = null;
-  let guestCount = 2;
+let state = { period: '', time: '', guests: 2 };
 
-  // ---- Init ----
-  function init() {
-    // Set min date to today
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('diningDate').setAttribute('min', today);
+// ---- Init ----
+(function init() {
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('date').setAttribute('min', today);
+})();
 
-    // Render time slots empty
-    document.getElementById('timeSlots').innerHTML = '';
+// ---- Pick Period ----
+function pickPeriod(p) {
+  if (state.period === p) { state.period = ''; state.time = ''; document.getElementById('timeGrid').innerHTML = ''; updateSeg(); clearErr('time'); return; }
+  state.period = p; state.time = '';
+  updateSeg();
+  const g = document.getElementById('timeGrid');
+  g.innerHTML = SLOTS[p].map(t => `<div class="time-chip" onclick="pickTime('${t}')">${t}</div>`).join('');
+  clearErr('time');
+}
+function updateSeg() {
+  document.querySelectorAll('.seg-btn').forEach(b => b.classList.toggle('active', b.dataset.p === state.period));
+}
+function pickTime(t) {
+  state.time = t;
+  document.querySelectorAll('.time-chip').forEach(c => c.classList.toggle('active', c.textContent === t));
+  clearErr('time');
+}
+
+// ---- Guests ----
+function adjGuests(d) {
+  state.guests = Math.max(1, Math.min(99, state.guests + d));
+  document.getElementById('guestVal').textContent = state.guests;
+}
+
+// ---- Validation ----
+function clearErr(f) {
+  const el = document.getElementById(f + 'Err');
+  if (el) el.style.display = 'none';
+  const inp = document.getElementById(f);
+  if (inp) inp.classList.remove('error');
+}
+function showErr(f) {
+  document.getElementById(f + 'Err').style.display = 'block';
+  document.getElementById(f).classList.add('error');
+}
+
+function validate() {
+  let ok = true;
+  const name = document.getElementById('name').value.trim();
+  if (!name) { showErr('name'); ok = false; }
+  const phone = document.getElementById('phone').value.trim();
+  if (!/^1[3-9]\d{9}$/.test(phone)) { showErr('phone'); ok = false; }
+  const date = document.getElementById('date').value;
+  if (!date) { showErr('date'); ok = false; }
+  if (!state.period || !state.time) {
+    document.getElementById('timeErr').style.display = 'block'; ok = false;
   }
+  return ok;
+}
 
-  // ---- Period Selection ----
-  function selectPeriod(period) {
-    selectedPeriod = period;
-    selectedTime = null;
+// ---- Submit ----
+function submitForm() {
+  if (!validate()) return;
 
-    // Update buttons
-    document.querySelectorAll('.period-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.period === period);
-    });
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const dateVal = document.getElementById('date').value;
+  const dateFmt = fmtDate(dateVal);
+  const per = state.period === 'lunch' ? 'Lunch 午餐' : 'Dinner 晚餐';
+  const spec = document.getElementById('note').value.trim();
 
-    // Render time slots
-    const slots = timeSlotsData[period];
-    const container = document.getElementById('timeSlots');
-    container.innerHTML = slots.map(t =>
-      `<div class="time-slot" onclick="selectTime('${t}')">${t}</div>`
-    ).join('');
+  let note = `CLOUD Bistro · Reservation
+━━━━━━━━━━━━━━━━━
 
-    clearError('timeError');
-  }
+预定人 / Guest
+  ${name}
 
-  function selectTime(time) {
-    selectedTime = time;
-    document.querySelectorAll('.time-slot').forEach(s => {
-      s.classList.toggle('active', s.textContent === time);
-    });
-    clearError('timeError');
-  }
+日期 / Date
+  ${dateFmt}
 
-  // ---- Guest Counter ----
-  function changeGuests(delta) {
-    guestCount = Math.max(1, Math.min(99, guestCount + delta));
-    document.getElementById('guestNumber').textContent = guestCount;
-  }
+时间 / Time
+  ${state.time} (${per})
 
-  // ---- Validation ----
-  function showError(fieldId, msgId) {
-    document.getElementById(fieldId).classList.add('error');
-    document.getElementById(msgId).style.display = 'block';
-  }
-  function clearError(msgId) {
-    const el = document.getElementById(msgId);
-    if (el) el.style.display = 'none';
-    // Clear related input error
-    if (msgId === 'nameError') document.getElementById('customerName').classList.remove('error');
-    if (msgId === 'phoneError') document.getElementById('customerPhone').classList.remove('error');
-    if (msgId === 'dateError') document.getElementById('diningDate').classList.remove('error');
-    if (msgId === 'timeError') {
-      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('error'));
-    }
-  }
+人数 / Guests
+  ${state.guests}位`;
 
-  function validate() {
-    let valid = true;
+  if (spec) note += `\n\n特殊需求 / Requests\n  ${spec}`;
 
-    const name = document.getElementById('customerName').value.trim();
-    if (!name) { showError('customerName', 'nameError'); valid = false; } else { clearError('nameError'); }
+  note += `
 
-    const phone = document.getElementById('customerPhone').value.trim();
-    if (!phone || !/^1[3-9]\d{9}$/.test(phone)) { showError('customerPhone', 'phoneError'); valid = false; } else { clearError('phoneError'); }
+━━━━━━━━━━━━━━━━━
+餐厅信息 / Restaurant Info
 
-    const date = document.getElementById('diningDate').value;
-    if (!date) { showError('diningDate', 'dateError'); valid = false; } else { clearError('dateError'); }
+${R.name}
+${R.addr}
+营业时间 / Hours: ${R.hours}
+电话 / Tel: ${R.phone}
 
-    if (!selectedPeriod || !selectedTime) {
-      document.getElementById('timeError').style.display = 'block';
-      valid = false;
-    }
+导航 / Navigate:
+https://uri.amap.com/marker?position=${R.lng},${R.lat}&name=CLOUD+Bistro
 
-    return valid;
-  }
+━━━━━━━━━━━━━━━━━
+如有任何需求或变更，请随时与我们联系。
+Please contact us for any changes.
 
-  // ---- Submit ----
-  function submitForm() {
-    if (!validate()) return;
+我们期待您的光临。
+We look forward to welcoming you.`;
 
-    const name = document.getElementById('customerName').value.trim();
-    const phone = document.getElementById('customerPhone').value.trim();
-    const date = document.getElementById('diningDate').value;
-    const dateFormatted = formatDate(date);
-    const periodLabel = selectedPeriod === 'lunch' ? '午餐' : '晚餐';
-    const special = document.getElementById('specialRequests').value.trim() || '无';
+  document.getElementById('noteBox').textContent = note;
+  document.getElementById('formSection').style.display = 'none';
+  document.getElementById('resultSection').style.display = 'block';
+  document.getElementById('copyBtn').textContent = '复制笔记 · Copy Note';
+  document.getElementById('copyBtn').classList.remove('done');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    const note =
-`══════════════════
-    📋 预定信息
-══════════════════
-
-🏠 餐厅：${RESTAURANT_NAME}
-👤 姓名：${name}
-📱 手机：${phone}
-📅 日期：${dateFormatted}
-🕐 时间：${periodLabel} ${selectedTime}
-👥 人数：${guestCount} 位
-📝 备注：${special}
-
-══════════════════
-  到店时请出示此信息
-  如有变动请联系餐厅
-══════════════════`;
-
-    document.getElementById('noteText').textContent = note;
-    document.getElementById('formCard').style.display = 'none';
-    document.getElementById('resultCard').classList.add('show');
-
-    // Reset copy button
-    const copyBtn = document.getElementById('copyBtn');
-    copyBtn.textContent = '📋 一键复制笔记';
-    copyBtn.classList.remove('copied');
-  }
-
-  // ---- Copy ----
-  function copyNote() {
-    const text = document.getElementById('noteText').textContent;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(() => onCopied());
-    } else {
-      // Fallback for WeChat/older browsers
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-        onCopied();
-      } catch (e) {
-        showToast('复制失败，请长按手动复制');
-      }
-      document.body.removeChild(ta);
-    }
-  }
-
-  function onCopied() {
+// ---- Copy ----
+function doCopy() {
+  const text = document.getElementById('noteBox').textContent;
+  const done = () => {
     const btn = document.getElementById('copyBtn');
-    btn.textContent = '✅ 已复制';
-    btn.classList.add('copied');
-    showToast('已复制到剪贴板');
+    btn.textContent = '已复制 · Copied ✓';
+    btn.classList.add('done');
+    toast('已复制到剪贴板 · Copied');
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
   }
+}
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;left:-9999px;';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch(e) { toast('请长按手动复制'); }
+  document.body.removeChild(ta);
+}
 
-  // ---- Reset ----
-  function resetForm() {
-    document.getElementById('customerName').value = '';
-    document.getElementById('customerPhone').value = '';
-    document.getElementById('diningDate').value = '';
-    document.getElementById('specialRequests').value = '';
-    selectedPeriod = null;
-    selectedTime = null;
-    guestCount = 2;
-    document.getElementById('guestNumber').textContent = '2';
-    document.getElementById('timeSlots').innerHTML = '';
-    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
-    document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
+// ---- Reset ----
+function doReset() {
+  document.getElementById('name').value = '';
+  document.getElementById('phone').value = '';
+  document.getElementById('date').value = '';
+  document.getElementById('note').value = '';
+  state = { period: '', time: '', guests: 2 };
+  document.getElementById('guestVal').textContent = '2';
+  document.getElementById('timeGrid').innerHTML = '';
+  updateSeg();
+  document.querySelectorAll('.field-error').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('.input.error').forEach(e => e.classList.remove('error'));
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('resultSection').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-    document.getElementById('resultCard').classList.remove('show');
-    document.getElementById('formCard').style.display = 'block';
+// ---- Map ----
+function openMap() {
+  window.location.href = `https://uri.amap.com/marker?position=${R.lng},${R.lat}&name=CLOUD+Bistro&callnative=1`;
+}
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ---- Helpers ----
-  function formatDate(dateStr) {
-    const d = new Date(dateStr + 'T00:00:00');
-    const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    const y = d.getFullYear();
-    const m = d.getMonth() + 1;
-    const day = d.getDate();
-    const w = weekDays[d.getDay()];
-    return `${y}年${m}月${day}日 ${w}`;
-  }
-
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toast._timeout);
-    toast._timeout = setTimeout(() => toast.classList.remove('show'), 1500);
-  }
-
-  // ---- Init on load ----
-  init();
+// ---- Helpers ----
+function fmtDate(s) {
+  const d = new Date(s + 'T00:00:00');
+  const w = ['周日 Sun','周一 Mon','周二 Tue','周三 Wed','周四 Thu','周五 Fri','周六 Sat'];
+  return `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${w[d.getDay()]}`;
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.classList.remove('show'), 1800);
+}
 </script>
-
 </body>
 </html>
