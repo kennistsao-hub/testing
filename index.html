@@ -530,7 +530,7 @@ function submitForm() {
   const spec = document.getElementById('note').value.trim();
 
   let note = `CLOUD Bistro · Reservation
-━━━━━━━━━━━━━━━━━
+━━━━━━━━━━
 
 预定人 / Guest
   ${name}
@@ -548,7 +548,7 @@ function submitForm() {
 
   note += `
 
-━━━━━━━━━━━━━━━━━
+━━━━━━━━━━
 餐厅信息 / Restaurant Info
 
 ${R.name}
@@ -559,7 +559,7 @@ ${R.addr}
 导航 / Navigate:
 https://uri.amap.com/marker?position=${R.lng},${R.lat}&name=CLOUD+Bistro
 
-━━━━━━━━━━━━━━━━━
+━━━━━━━━━━
 如有任何需求或变更，请随时与我们联系。
 Please contact us for any changes.
 
@@ -635,3 +635,4 @@ function toast(msg) {
 </script>
 </body>
 </html>
+
